@@ -1,6 +1,8 @@
-const canvas = document.createElement("canvas");
+const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
-document.body.appendChild(canvas);
+const text = document.getElementById("text");
+const btnPlayAgain = document.getElementById("btnPlayAgain");
+
 canvas.width = 1024;
 canvas.height = 768;
 
@@ -87,6 +89,9 @@ function update() {
   detectEnemyCollision();
   detectPlayerCollision();
   drawScore();
+
+  if (gameOvr()) return;
+
   requestAnimationFrame(update);
 }
 
@@ -131,6 +136,26 @@ function movePlayerOne() {
   if (keys["w"] && player.y > 0) player.y -= 5;
   if (keys["s"] && player.y < canvas.height - 20) player.y += 5;
   requestAnimationFrame(movePlayerOne);
+}
+
+function gameOvr() {
+  if (score1 >= 20) {
+    text.style.visibility = "visible";
+    text.textContent = "Player 1 Wins!";
+    btnPlayAgain.style.visibility = "visible";
+    console.log("Player 1 Wins!");
+    return true;
+  } else if (score2 >= 20) {
+    text.style.visibility = "visible";
+    btnPlayAgain.style.visibility = "visible";
+    text.textContent = "Player 2 Wins!";
+    console.log("Player 2 Wins!");
+    return true;
+  }
+  return false;
+}
+function playAgain() {
+  location.reload();
 }
 
 update();
